@@ -13,7 +13,7 @@ public class PatientServiceImpl implements PatientService {
     public String registerPetient(Patient patient) {
         PatientRepo patientRepo = new PatientRepo();
         String result = patientRepo.addPatient(patient);
-        if(result != ""){
+        if(result.equals("")){
             HospitalRepo hospitalRepo = new HospitalRepo();
             ArrayList<HospitalsWithBeds> hospitalsWithBedsArrayList = hospitalRepo.selectHospitalsWithBeds();
             if(hospitalsWithBedsArrayList.isEmpty()){
