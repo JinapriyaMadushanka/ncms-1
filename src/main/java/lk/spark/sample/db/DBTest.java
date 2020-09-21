@@ -1,5 +1,6 @@
 package lk.spark.sample.db;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -19,8 +20,7 @@ public class DBTest
      * rs, con, stmt variable names are commonly used short names, so you can keep them as it is.
      *
      */
-    private void simpleInsertQuery()
-    {
+    private void simpleInsertQuery() {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -51,8 +51,7 @@ public class DBTest
         }
     }
 
-    private void simpleSelectQuery()
-    {
+    private void simpleSelectQuery() {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -80,8 +79,7 @@ public class DBTest
         }
     }
 
-    private void complexSelectQuery()
-    {
+    private void complexSelectQuery() {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -118,8 +116,7 @@ public class DBTest
     }
 
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         DBTest dbTest = new DBTest();
         dbTest.simpleSelectQuery();
         //dbTest.simpleInsertQuery();

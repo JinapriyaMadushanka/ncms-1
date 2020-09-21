@@ -1,7 +1,9 @@
 package lk.spark.sample.repository;
 
 import lk.spark.sample.db.DBConnectionPool;
+import lk.spark.sample.utill.Constants;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StatisticRepo {
-    public int StatisticForGeneral(){
+    public int StatisticForGeneral() {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -18,7 +20,7 @@ public class StatisticRepo {
 
         try {
             con = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("SELECT COUNT(patient.id) As patientCount FROM patient");
+            stmt = con.prepareStatement(Constants.GENARAL_STATISTICS);
             rs = stmt.executeQuery();
             while(rs.next()){
                 patientCount = rs.getInt("patientCount");
@@ -33,7 +35,7 @@ public class StatisticRepo {
         return patientCount;
     }
 
-    public List statisticForHospital(){
+    public List statisticForHospital() {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -44,7 +46,7 @@ public class StatisticRepo {
         try {
             patientCount = StatisticForGeneral();
             con = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("SELECT COUNT(hospital_bed.id) As bedCount FROM hospital_bed WHERE hospital_bed.patient_id IS NULL");
+            stmt = con.prepareStatement(Constants.HOSPITAL_STATISTICS);
             rs = stmt.executeQuery();
             while(rs.next()){
                 bedCount = rs.getInt("bedCount");

@@ -2,11 +2,13 @@ package lk.spark.sample.repository;
 
 import lk.spark.sample.dao.User;
 import lk.spark.sample.db.DBConnectionPool;
+import lk.spark.sample.utill.Constants;
 
+import java.io.IOException;
 import java.sql.*;
 
 public class UserRepo {
-    public String userRegister(User user){
+    public String userRegister(User user) {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -14,7 +16,7 @@ public class UserRepo {
 
         try {
             con = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("INSERT INTO user (username, password, name, moh, hospital) VALUES (?, ?, ?, ?, ?)");
+            stmt = con.prepareStatement(Constants.REGISTER_USER);
             stmt.setString(1, user.getUserName());
             stmt.setString(2, user.getPassword());
             stmt.setString(3, user.getName());
@@ -31,7 +33,7 @@ public class UserRepo {
         return changedRow == 1 ? "User Registerd" : "User registration failed";
     }
 
-    public String userLogin(String userName, String password){
+    public String userLogin(String userName, String password) {
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -39,7 +41,7 @@ public class UserRepo {
 
         try {
             con = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("SELECT name FROM user WHERE user.username = ? AND user.password = ?");
+            stmt = con.prepareStatement(Constants.LOGIN_USER);
             stmt.setString(1, userName);
             stmt.setString(2, password);
             rs = stmt.executeQuery();

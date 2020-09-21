@@ -3,15 +3,16 @@ package lk.spark.sample.repository;
 import lk.spark.sample.dao.Hospital;
 import lk.spark.sample.dao.HospitalsWithBeds;
 import lk.spark.sample.db.DBConnectionPool;
+import lk.spark.sample.utill.Constants;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.UUID;
 
 public class HospitalRepo {
 
-    public String registerHospital(Hospital hospital) {
+    public String registerHospital(Hospital hospital){
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement stmt = null;
@@ -24,18 +25,12 @@ public class HospitalRepo {
         int changeRowss = 0;
 
         try {
-//            String name = req.getParameter("name");
-//            String district = req.getParameter("district");
-//            int locationX = Integer.parseInt(req.getParameter("locationx"));
-//            int locationY = Integer.parseInt(req.getParameter("locationy"));
-
-
             UUID uid = UUID.randomUUID();
             String uId = uid.toString();
 
             con = DBConnectionPool.getInstance().getConnection();
             conn = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("INSERT INTO hospital (id, name, district, location_x, location_y, build_date) VALUES (?,?,?,?,?,?)");
+            stmt = con.prepareStatement(Constants.REGISTER_HOSPITAL);
             stmt.setString(1, uId);
             stmt.setString(2, hospital.getName());
             stmt.setString(3, hospital.getDistrict());
@@ -44,15 +39,9 @@ public class HospitalRepo {
             stmt.setDate(6, new Date(new java.util.Date().getTime()));
             changedRows = stmt.executeUpdate();
             //System.out.println( );
-            stmtt = conn.prepareStatement("INSERT INTO hospital_bed (hospital_id) VALUES ('" + uId + "'),('" + uId + "'),('" + uId + "'),('" + uId + "')," +
-                    "('" + uId + "'),('" + uId + "'),('" + uId + "'),('" + uId + "'),('" + uId + "'),('" + uId + "')");
+            stmtt = conn.prepareStatement(Constants.createBedsForHospital(uId));
             changeRowss = stmtt.executeUpdate();
 
-//            resp.setContentType("application/json");
-//            PrintWriter writer = resp.getWriter();
-//            //writer.print("Response: \n");
-//            writer.print(changedRows == 1 ? "Successfully Hospital Registered" : "Insertion failed");
-//            writer.flush();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,7 +66,7 @@ public class HospitalRepo {
         try {
             con = DBConnectionPool.getInstance().getConnection();
 //            stmt = con.prepareStatement("SELECT hospital.id, hospital.location_x, hospital.location_y FROM hospital INNER JOIN hospital_bed ON hospital.id = hospital_bed.hospital_id AND hospital_bed.patient_id IS NULL");
-            stmt = con.prepareStatement("SELECT DISTINCT hospital.id, hospital.location_x, hospital.location_y FROM hospital INNER JOIN hospital_bed ON hospital.id=hospital_bed.hospital_id AND hospital_bed.patient_id IS NULL");
+            stmt = con.prepareStatement(Constants.SELECT_HOSPITALS_WITH_BEDS);
             rs = stmt.executeQuery();
             while(rs.next()){
                 HospitalsWithBeds hospitalsWithBeds = new HospitalsWithBeds(rs.getString("id"),
@@ -104,7 +93,7 @@ public class HospitalRepo {
 
         try {
             con = DBConnectionPool.getInstance().getConnection();
-            stmt = con.prepareStatement("UPDATE hospital_bed SET hospital_bed.patient_id = ? WHERE hospital_bed.hospital_id = ? AND hospital_bed.patient_id IS NULL LIMIT 1");
+            stmt = con.prepareStatement(Constants.ASSIGN_PATIENT_TO_BED);
             stmt.setString(1, result);
             stmt.setString(2, hospitalId);
             int rows = stmt.executeUpdate();

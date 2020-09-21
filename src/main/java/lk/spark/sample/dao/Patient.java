@@ -1,9 +1,16 @@
 package lk.spark.sample.dao;
 
+
+import javax.validation.constraints.NotNull;
+
 public class Patient {
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
+    @NotNull
     private String district;
+    
     private int locationX;
     private int locationY;
     private String gender;
