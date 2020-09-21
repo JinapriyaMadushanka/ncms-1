@@ -3,7 +3,6 @@ package lk.spark.sample.controller;
 
 import com.google.gson.JsonObject;
 import lk.spark.sample.dao.Patient;
-import lk.spark.sample.db.DBConnectionPool;
 import lk.spark.sample.service.PatientService;
 import lk.spark.sample.service.PatientServiceImpl;
 import lk.spark.sample.utill.ServletConstants;
@@ -15,11 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.UUID;
+
 
 @WebServlet(name = "PatientServlet")
 public class PatientServlet extends HttpServlet {
