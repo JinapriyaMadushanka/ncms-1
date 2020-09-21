@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import lk.spark.sample.dao.User;
 import lk.spark.sample.service.UserService;
 import lk.spark.sample.service.UserServiceImpl;
+import lk.spark.sample.utill.ServletConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,18 +18,18 @@ import java.io.PrintWriter;
 public class UserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userU = req.getParameter("user");
+        String userU = req.getParameter(ServletConstants.USER);
         UserService userService = new UserServiceImpl();
-        if(userU.equals("register")){
-            User user = new User(req.getParameter("userName"),
-                    req.getParameter("password"),
-                    req.getParameter("name"),
-                    Integer.parseInt(req.getParameter("moh")),
-                    Integer.parseInt(req.getParameter("hospital")));
+        if(userU.equals(ServletConstants.USER_REGISTER)){
+            User user = new User(req.getParameter(ServletConstants.USER_NAME),
+                    req.getParameter(ServletConstants.PASSWORD),
+                    req.getParameter(ServletConstants.NAME),
+                    Integer.parseInt(req.getParameter(ServletConstants.IS_MOH)),
+                    Integer.parseInt(req.getParameter(ServletConstants.IS_HOSPITAL)));
             String result = userService.registerUser(user);
             sendResponse(result, resp);
-        }else if(userU.equals("login")){
-            String result = userService.loginUser(req.getParameter("userName"), req.getParameter("password"));
+        }else if(userU.equals(ServletConstants.LOGIN)){
+            String result = userService.loginUser(req.getParameter(ServletConstants.USER_NAME), req.getParameter(ServletConstants.PASSWORD));
             sendResponse(result, resp);
         }
 
@@ -36,10 +37,10 @@ public class UserServlet extends HttpServlet {
 
     private void sendResponse(String data, HttpServletResponse resp) throws IOException
     {
-        resp.setContentType("application/json");
+        resp.setContentType(ServletConstants.CONTENT_TYPE);
         PrintWriter writer = resp.getWriter();
         JsonObject json = new JsonObject();
-        json.addProperty("Response", data);
+        json.addProperty(ServletConstants.RESPONSE_KEY, data);
         writer.print(json.toString());
         writer.flush();
     }

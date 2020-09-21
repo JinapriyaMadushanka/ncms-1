@@ -6,6 +6,7 @@ import lk.spark.sample.dao.Patient;
 import lk.spark.sample.db.DBConnectionPool;
 import lk.spark.sample.service.PatientService;
 import lk.spark.sample.service.PatientServiceImpl;
+import lk.spark.sample.utill.ServletConstants;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,10 +26,10 @@ public class PatientServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Patient patient = new Patient(req.getParameter("firstName"),req.getParameter("lastName"),
-                req.getParameter("district"), Integer.parseInt(req.getParameter("locationX")),
-                Integer.parseInt(req.getParameter("locationY")), req.getParameter("gender"), req.getParameter("contact"),
-                req.getParameter("email"), Integer.parseInt(req.getParameter("age")));
+        Patient patient = new Patient(req.getParameter(ServletConstants.FIRST_NAME),req.getParameter(ServletConstants.LAST_NAME),
+                req.getParameter(ServletConstants.DISTRICT), Integer.parseInt(req.getParameter(ServletConstants.LOCATION_Y)),
+                Integer.parseInt(req.getParameter(ServletConstants.LOCATION_Y)), req.getParameter(ServletConstants.GENDER), req.getParameter(ServletConstants.CONTACT),
+                req.getParameter(ServletConstants.EMAIL), Integer.parseInt(req.getParameter(ServletConstants.AGE)));
 
         PatientService patientService = new PatientServiceImpl();
         String result =  patientService.registerPetient(patient);
@@ -39,10 +40,10 @@ public class PatientServlet extends HttpServlet {
 
     private void sendResponse(String data, HttpServletResponse resp) throws IOException
     {
-        resp.setContentType("application/json");
+        resp.setContentType(ServletConstants.CONTENT_TYPE);
         PrintWriter writer = resp.getWriter();
         JsonObject json = new JsonObject();
-        json.addProperty("Response", data);
+        json.addProperty(ServletConstants.RESPONSE_KEY, data);
         writer.print(json.toString());
         writer.flush();
     }
