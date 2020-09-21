@@ -32,4 +32,6 @@ public final class Constants {
     //user
     public static final String REGISTER_USER = "INSERT INTO user (username, password, name, moh, hospital) VALUES (?, ?, ?, ?, ?)";
     public static final String LOGIN_USER = "SELECT name FROM user WHERE user.username = ? AND user.password = ?";
+
+
 }
