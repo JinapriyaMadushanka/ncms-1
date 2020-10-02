@@ -17,4 +17,10 @@ public class StatisticServiceImpl implements StatisticService{
         StatisticRepo statisticRepo = new StatisticRepo();
         return statisticRepo.statisticForHospital();
     }
+    
+    @Override
+    public List getStatisticForMoh() {
+        StatisticRepo statisticRepo = new StatisticRepo();
+        return statisticRepo.statisticForMoh();
+    }
 }
