@@ -33,4 +33,11 @@ public class DoctorServiceImpl implements DoctorService{
         String result = doctorRepo.dischargePatients(doctorId, patientId);
         return result;
     }
+    
+    @Override
+    public String changeDoctorRole(String doctoeId){
+        DoctorRepo doctorRepo = new DoctorRepo();
+        String result = doctorRepo.changeRole(doctorId);
+        return result;
+    }
 }
