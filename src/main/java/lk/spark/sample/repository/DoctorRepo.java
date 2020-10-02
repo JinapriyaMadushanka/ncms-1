@@ -119,4 +119,25 @@ public class DoctorRepo {
         }
         return "patient Dischrged";
     }
+    
+    public Stirng chageRole(String doctorId){
+        ResultSet rs = null;
+        Connection con = null;
+        PreparedStatement stmt = null;
+        
+        try {
+            con = DBConnectionPool.getInstance().getConnection();
+            stmt = con.preparedStatement("UPDATE doctor SET (is_director = ?) WHERE doctor.id = ?");
+            stmt.setInt(1, 1);
+            stmt.setString(2, doctorId);
+            stmt.executeUpdate();
+        }catch(SQLException){
+            e.printStackTrace();
+        }finally{
+            DBConnectionPool.getInstance().close(rs);
+            DBConnectionPool.getInstance().close(stmt);
+            DBConnectionPool.getInstance().close(con);
+        }
+        return "Role changed";
+    }
 }
